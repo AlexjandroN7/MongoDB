@@ -1,0 +1,15 @@
+consulta per tal d'obtenir les ciutats a N km d'una ciutat donada
+
+Respuesta: db.getCollection('zips').find({loc: {$near: [32.950324,87.11924]}});
+
+consulta per obtenir les ciutats en el radi d'N km d'una ciutat donada
+
+Respuesta: db.getCollection('zips').find({loc: {"$within":{ "$center": [ [86.959727, 55.588437], 50] }}});
+
+consulta per obtenir les ciutats dintre d'una area d'un rectangle donat
+
+Respuesta: db.getCollection('zips').find({loc: {"$within" : {"$box" : [[33.584132,86.51557],[100,100]]}}})
+
+consulta per obtenir les ciutats dintre d'una area delimitada per un pentàgon
+
+Respuesta: db.getCollection('zips').find({loc: {"$within": {"$polygon": [[32.950324,87.11924], [100, 100],[300, 300],[400, 400], [500, 500]]}}})
