@@ -1,0 +1,93 @@
+Aggregation Framework:
+-------------------------------------
+
+db.students.aggregate([
+   {"$group": {"_id": "$birth_year", "students": {$sum: 1}}},
+   {"$sort": {"_id": 1}}
+])
+
+Map-Reduce:
+--------------------------------------
+
+var map = function() {
+    return emit(this.birth_year, 1);
+}
+
+var reduce = function(key, values) {
+    return Array.sum(values);
+}
+
+db.students.mapReduce(map, reduce, {"out": {"inline": 1}})
+
+
+#############################################################################################################
+
+Aggregation Framework:
+-------------------------------------
+
+db.students.aggregate([
+   {"$group": {"_id": {"year": "$birth_year", "gender": "$gender"}, "students": {$sum: 1}}},
+   {"$sort": {"_id.year": 1, "_id.gender": 1}}
+])
+
+Map-Reduce:
+--------------------------------------
+
+var map = function() {
+    return emit({"name": this.birth_year, "gender": this.gender}, 1);
+
+var reduce = function(key, values) {
+    return Array.sum(values);
+}
+
+db.students.mapReduce(map, reduce, {"out": {"inline": 1}})
+
+
+
+Aggregation Framework:
+----------------------------------------
+
+db.stories.aggregate([
+  {"$group": {"_id": "$user.name", "stories": {"$sum": 1}, "comments": {"$sum": "$comments"}, "diggs": {"$sum": "$diggs"}}},
+  {"$sort": {"stories": -1}}
+])
+
+Map-Reduce:
+--------------------------------------
+
+var map = function() {
+    return emit(this.birth_year, 1);
+}
+
+var reduce = function(key, values) {
+    return Array.sum(values);
+}
+
+db.students.mapReduce(map, reduce, {"out": {"inline": 1}})
+
+
+#############################################################################################################
+
+Aggregation Framework:
+----------------------------------------
+
+db.zips.aggregate([
+   {"$match": {"city": /^\D*$/}},
+   {"$group": {"_id": "$city", "population": {"$sum": "$pop"}}},
+   {"$sort": {"population": -1}}
+])
+
+Map-Reduce:
+--------------------------------------
+
+var map = function() {
+    return emit({"city": this.city, "population": this.pop}, 1);
+}
+
+var reduce = function(key, values) {
+    return Array.sum(values);
+}
+
+db.zips.mapReduce(map, reduce, {"out": {"inline": 1}})
+
+
